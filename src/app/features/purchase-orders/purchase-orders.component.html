@@ -1,0 +1,67 @@
+<div class="po-container">
+
+    <div class="page-header">
+        <a routerLink="/dashboard" class="back-btn">
+            <span class="back-icon">←</span> Back
+        </a>
+        <h1 class="page-title">Purchase Orders</h1>
+    </div>
+
+    <!-- Loading -->
+    <div class="loading-text" *ngIf="loading">
+        Loading Purchase Orders...
+    </div>
+
+    <!-- Error -->
+    <div class="error-text" *ngIf="errorMessage">
+        {{ errorMessage }}
+    </div>
+
+    <!-- Purchase Orders Table -->
+    <div class="table-container" *ngIf="!loading && !errorMessage">
+        <table class="data-table">
+            <thead>
+  <tr>
+    <th>PO Number</th>
+    <th>PO Item</th>
+    <th>PO Date</th>
+    <th>Material Number</th>
+    <th>Description</th>
+    <th>Qty</th>
+    <th>Unit</th>
+    <th>Net Price</th>
+    <th>Currency</th>
+    <th>Delivery Date</th>
+   <th>Status</th>
+  </tr>
+</thead>
+
+<tbody>
+  <tr *ngFor="let po of purchaseOrders">
+    <td>{{ po.poNumber }}</td>
+    <td>{{ po.poItem }}</td>
+    <td>{{ po.poDate }}</td>
+    <td>{{ po.materialNumber }}</td>
+    <td>{{ po.description }}</td>
+    <td>{{ po.quantity }}</td>
+    <td>{{ po.unit }}</td>
+    <td>{{ po.netPrice }}</td>
+    <td>{{ po.currency }}</td>
+    <td>{{ po.deliveryDate }}</td>
+
+    <td>
+      <span class="status-badge"
+            [ngClass]="{
+                'status-open': po.status === 'Open',
+                'status-completed': po.status === 'Completed'
+            }">
+        {{ po.status }}
+      </span>
+    </td>
+  </tr>
+</tbody>
+
+        </table>
+    </div>
+
+</div>

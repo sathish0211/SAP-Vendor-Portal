@@ -1,0 +1,62 @@
+<div class="payments-container">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <a routerLink="/financials" class="back-btn">
+            <span class="back-icon">←</span> Back
+        </a>
+        <h1 class="page-title">Payments & Aging</h1>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="loading" class="loading-box">
+        Loading payments & aging details...
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="errorMessage && !loading" class="error-box">
+        {{ errorMessage }}
+    </div>
+
+    <!-- No Data -->
+    <div *ngIf="!loading && !errorMessage && payments.length === 0" class="no-data-box">
+        No records found.
+    </div>
+
+    <!-- Payments Aging Table -->
+    <div class="table-container" *ngIf="!loading && !errorMessage && payments.length > 0">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Billing Document</th>
+                    <th>Billing Date</th>
+                    <th>Due Date</th>
+                    <th>Amount</th>
+                    <th>Currency</th>
+                    <th>Aging Days</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let payment of payments">
+                    <td>{{ payment.billingDocument }}</td>
+                    <td>{{ payment.billingDate }}</td>
+                    <td>{{ payment.dueDate }}</td>
+                    <td>{{ payment.amount }}</td>
+                    <td>{{ payment.currency }}</td>
+
+                    <td>
+                        <span 
+                            class="aging-badge"
+                            [ngClass]="{
+                                'aging-overdue': payment.agingDays > 0,
+                                'aging-ok': payment.agingDays <= 0
+                            }">
+                            {{ payment.agingDays }}
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

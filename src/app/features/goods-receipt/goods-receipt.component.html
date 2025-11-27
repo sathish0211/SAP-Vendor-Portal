@@ -1,0 +1,51 @@
+<div class="gr-container">
+
+    <div class="page-header">
+        <a routerLink="/dashboard" class="back-btn">
+            <span class="back-icon">←</span> Back
+        </a>
+        <h1 class="page-title">Goods Receipt</h1>
+    </div>
+
+    <!-- Loading -->
+    <div class="loading-text" *ngIf="loading">
+        Loading Goods Receipt Records...
+    </div>
+
+    <!-- Error -->
+    <div class="error-text" *ngIf="errorMessage">
+        {{ errorMessage }}
+    </div>
+
+    <!-- Table -->
+    <div class="table-container" *ngIf="!loading && !errorMessage">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>GR Number</th>
+                    <th>Posting Date</th>
+                    <th>Material Number</th>
+                    <th>PO Number</th>
+                    <th>PO Item</th>
+                    <th>Plant</th>
+                    <th>Company Code</th>
+                    <th>Fiscal Year</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let gr of goodsReceipts">
+                    <td>{{ gr.grNumber }}</td>
+                    <td>{{ gr.postingDate }}</td>
+                    <td>{{ gr.materialNumber }}</td>
+                    <td>{{ gr.poNumber }}</td>
+                    <td>{{ gr.poItem }}</td>
+                    <td>{{ gr.plant }}</td>
+                    <td>{{ gr.companyCode }}</td>
+                    <td>{{ gr.fiscalYear }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>

@@ -1,0 +1,50 @@
+<div class="rfq-container">
+
+    <div class="page-header">
+        <a routerLink="/dashboard" class="back-btn">
+            <span class="back-icon">←</span> Back
+        </a>
+        <h1 class="page-title">Request for Quotation</h1>
+    </div>
+
+    <!-- Loading -->
+    <div class="loading-text" *ngIf="loading">
+        Loading RFQs...
+    </div>
+
+    <!-- Error -->
+    <div class="error-text" *ngIf="errorMessage">
+        {{ errorMessage }}
+    </div>
+
+    <!-- RFQ Table -->
+    <div class="table-container" *ngIf="!loading && !errorMessage">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>RFQ Number</th>
+                    <th>RFQ Date</th>
+                    <th>Material Number</th>
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Unit</th>
+                    <th>Delivery Date</th>
+                    <th>Bid Submission Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let rfq of rfqs">
+                    <td>{{ rfq.rfqNumber }}</td>
+                    <td>{{ rfq.rfqDate }}</td>
+                    <td>{{ rfq.materialNumber }}</td>
+                    <td>{{ rfq.description }}</td>
+                    <td>{{ rfq.quantity }}</td>
+                    <td>{{ rfq.unit }}</td>
+                    <td>{{ rfq.deliveryDate }}</td>
+                    <td>{{ rfq.bidSubmissionDate }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>

@@ -1,0 +1,76 @@
+.rfq-container {
+    padding: 20px;
+}
+
+.page-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.back-btn {
+    display: flex;
+    align-items: center;
+    background-color: var(--color-primary);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: var(--radius-button);
+    cursor: pointer;
+    margin-right: 20px;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.back-btn:hover {
+    background-color: #6d0000;
+}
+
+.back-icon {
+    margin-right: 8px;
+}
+
+.page-title {
+    font-size: 1.5rem;
+    color: var(--color-primary);
+}
+
+.table-container {
+    background-color: var(--color-card-bg);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-soft);
+    overflow-x: auto;
+    padding: 20px;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px;
+}
+
+.data-table th,
+.data-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.data-table th {
+    background-color: var(--color-primary);
+    color: white;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.data-table th:first-child {
+    border-top-left-radius: 8px;
+}
+
+.data-table th:last-child {
+    border-top-right-radius: 8px;
+}
+
+.data-table tr:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+}

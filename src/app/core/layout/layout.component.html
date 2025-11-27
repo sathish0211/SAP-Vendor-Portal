@@ -1,0 +1,36 @@
+<div class="layout-container">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo-text">Kaar Tech</div>
+      <div class="logo-subtext">In Pursuit of Excellence</div>
+    </div>
+    
+    <div class="sidebar-title">Vendor Portal</div>
+    
+    <nav class="nav-menu">
+      <a routerLink="/profile" routerLinkActive="active" class="nav-item">
+        <span class="nav-icon">👤</span>
+        Profile
+      </a>
+      <a routerLink="/dashboard" routerLinkActive="active" class="nav-item">
+        <span class="nav-icon">📊</span>
+        Dashboard
+      </a>
+      <a routerLink="/financials" routerLinkActive="active" class="nav-item">
+        <span class="nav-icon">💰</span>
+        Financial Sheet
+      </a>
+    </nav>
+    
+    <div class="logout-section">
+      <button class="logout-btn" (click)="logout()">
+        <span class="nav-icon">🚪</span>
+        Logout
+      </button>
+    </div>
+  </aside>
+  
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

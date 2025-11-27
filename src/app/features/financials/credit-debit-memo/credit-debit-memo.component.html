@@ -1,0 +1,56 @@
+<div class="memo-container">
+
+    <div class="page-header">
+        <a routerLink="/financials" class="back-btn">
+            <span class="back-icon">←</span> Back
+        </a>
+        <h1 class="page-title">Credit / Debit Memo</h1>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div *ngIf="loading" class="loading">
+        Loading memo details...
+    </div>
+
+    <div class="table-container" *ngIf="!loading">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Memo No</th>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Amount</th>
+                    <th>Currency</th>
+                    <th>Reference</th>
+                    <!-- <th>Description</th> -->
+                    <th>Material</th>
+                    <th>Qty</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let memo of memos">
+                    <td>{{ memo.memoNumber }}</td>
+                    <td>{{ memo.documentDate }}</td>
+
+                    <!-- Type with color -->
+                    <td>
+                        <span class="type-badge"
+                              [ngClass]="{
+                                'type-credit': getMemoType(memo.debitCreditIndicator) === 'Credit',
+                                'type-debit': getMemoType(memo.debitCreditIndicator) === 'Debit'
+                              }">
+                            {{ getMemoType(memo.debitCreditIndicator) }}
+                        </span>
+                    </td>
+
+                    <td>{{ memo.amount }}</td>
+                    <td>{{ memo.currency }}</td>
+                    <td>{{ memo.reference || '—' }}</td>
+                    <!-- <td>{{ memo.text || '—' }}</td> -->
+                    <td>{{ memo.materialNumber || '—' }}</td>
+                    <td>{{ memo.quantity }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
