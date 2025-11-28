@@ -20,7 +20,7 @@ export class GoodsReceiptComponent implements OnInit {
 
     if (!vendorId) {
       this.loading = false;
-      this.errorMessage = "No Vendor ID found in local storage.";
+      this.errorMessage = "No vendor ID found in storage.";
       return;
     }
 
@@ -40,14 +40,14 @@ export class GoodsReceiptComponent implements OnInit {
 
       if (result.items) {
         this.goodsReceipts = result.items.map((item: any) => ({
-          grNumber: item.materialDocument,    // MBLNR
-          postingDate: item.postingDate,     // BUDAT
-          materialNumber: item.materialNumber,  // MATNR
-          poNumber: item.purchaseOrder,      // EBELN
-          poItem: item.poItem,               // EBELP
-          plant: item.plant,                 // WERKS
-          companyCode: item.companyCode,     // BUKRS
-          fiscalYear: item.materialYear      // MJAHR
+          grNumber: item.materialDocument,   // MBLNR
+          postingDate: item.postingDate,    // BUDAT
+          materialNumber: item.materialNumber,
+          poNumber: item.purchaseOrder,
+          poItem: item.poItem,
+          plant: item.plant,
+          companyCode: item.companyCode,
+          fiscalYear: item.materialYear
         }));
       } else {
         this.errorMessage = "No Goods Receipt records found.";
@@ -55,7 +55,7 @@ export class GoodsReceiptComponent implements OnInit {
 
     } catch (error) {
       this.loading = false;
-      this.errorMessage = "Unable to connect to server.";
+      this.errorMessage = "Failed to connect to server.";
       console.error(error);
     }
   }

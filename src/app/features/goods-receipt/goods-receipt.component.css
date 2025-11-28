@@ -41,8 +41,6 @@
     box-shadow: var(--shadow-soft);
     overflow-x: auto;
     padding: 20px;
-    max-height: 600px;
-    /* Limit height for scrolling */
 }
 
 .data-table {
@@ -63,19 +61,14 @@
     color: white;
     font-weight: 500;
     white-space: nowrap;
-    position: sticky;
-    top: 0;
-    z-index: 10;
 }
 
-/* Fix for sticky header border radius */
 .data-table th:first-child {
-    border-top-left-radius: 0;
-    /* Sticky headers shouldn't have radius if scrolling */
+    border-top-left-radius: 8px;
 }
 
 .data-table th:last-child {
-    border-top-right-radius: 0;
+    border-top-right-radius: 8px;
 }
 
 .data-table tr:hover {
