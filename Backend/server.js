@@ -643,5 +643,80 @@ app.post("/memo", async (req, res) => {
 });
 
 
+// ---------------- INVOICE PDF DOWNLOAD API ----------------
+
+// SAP Invoice PDF URL
+const SAP_INVOICE_PDF_URL =
+  "http://172.17.19.24:8000/sap/bc/srt/scs/sap/zsg_rfc_invoice_pdf_vp?sap-client=100";
+
+// Build SOAP XML for PDF Request
+function buildInvoicePDFXML(invoiceNo, vendorId) {
+  return `
+  <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                    xmlns:tns="urn:sap-com:document:sap:rfc:functions">
+    <soapenv:Header/>
+    <soapenv:Body>
+      <tns:ZSG_FM_INVOICE_PDF_VP>
+        <IV_INVOICE_NO>${invoiceNo}</IV_INVOICE_NO>
+        <IV_VENDOR_ID>${vendorId}</IV_VENDOR_ID>
+      </tns:ZSG_FM_INVOICE_PDF_VP>
+    </soapenv:Body>
+  </soapenv:Envelope>
+  `;
+}
+
+// Invoice PDF API Endpoint
+app.post("/invoice-download", async (req, res) => {
+  const { invoiceNo, vendorId } = req.body;
+
+  if (!invoiceNo || !vendorId) {
+    return res.status(400).json({
+      message: "Invoice Number and Vendor ID required"
+    });
+  }
+
+  const xmlData = buildInvoicePDFXML(invoiceNo, vendorId);
+
+  try {
+    const response = await axios.post(SAP_INVOICE_PDF_URL, xmlData, {
+      headers: { "Content-Type": "text/xml;charset=UTF-8" },
+      auth: { username: SAP_USERNAME, password: SAP_PASSWORD }
+    });
+
+    xml2js.parseString(response.data, { explicitArray: false }, (err, result) => {
+      if (err)
+        return res.status(500).json({ message: "XML Parsing Error" });
+
+      try {
+        const base64Data =
+          result["soap-env:Envelope"]["soap-env:Body"]["n0:ZSG_FM_INVOICE_PDF_VPResponse"]["EV_BASE64"];
+
+        if (!base64Data) {
+          return res.status(404).json({ message: "PDF not found" });
+        }
+
+        // SEND TO FRONT-END
+        return res.json({
+          invoiceNo,
+          base64: base64Data
+        });
+
+      } catch (e) {
+        return res.status(500).json({
+          message: "Invalid PDF SOAP Response",
+          error: e.message
+        });
+      }
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      message: "SAP Connection Failed",
+      error: error.message
+    });
+  }
+});
+
+
 
 app.listen(3000, () => console.log("Server running on port 3000"));

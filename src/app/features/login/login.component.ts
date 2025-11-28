@@ -19,7 +19,18 @@ export class LoginComponent {
   errorMessage = '';
   loading = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+
+    // 🔥 Prevent browser from going back to the cached previous page
+    history.pushState(null, '');
+    history.pushState(null, '');
+
+    window.addEventListener('popstate', () => {
+      // block swipe-left on login page
+      location.replace(location.href);
+      history.pushState(null, '');
+    });
+  }
 
   togglePassword() {
     this.showPassword = !this.showPassword;
@@ -29,7 +40,6 @@ export class LoginComponent {
     this.errorMessage = '';
     this.loading = true;
 
-    // SAP requires 10 digits vendor ID
     const paddedVendorId = this.vendorId.padStart(10, '0');
 
     try {
@@ -46,7 +56,7 @@ export class LoginComponent {
       this.loading = false;
 
       if (result.success) {
-        // Save vendor ID for Profile Page
+        localStorage.setItem("token", "true");  // REQUIRED for guard
         localStorage.setItem("vendorId", paddedVendorId);
 
         this.router.navigate(['/profile']);
