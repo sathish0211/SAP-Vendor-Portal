@@ -32,7 +32,7 @@
     <th>Net Price</th>
     <th>Currency</th>
     <th>Delivery Date</th>
-   <th>Status</th>
+   
   </tr>
 </thead>
 
@@ -49,15 +49,7 @@
     <td>{{ po.currency }}</td>
     <td>{{ po.deliveryDate }}</td>
 
-    <td>
-      <span class="status-badge"
-            [ngClass]="{
-                'status-open': po.status === 'Open',
-                'status-completed': po.status === 'Completed'
-            }">
-        {{ po.status }}
-      </span>
-    </td>
+   
   </tr>
 </tbody>
 
