@@ -2,18 +2,24 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-payments-aging',
   standalone: true,
-  imports: [CommonModule, RouterModule, HttpClientModule],
+  imports: [CommonModule, RouterModule, HttpClientModule, FormsModule],
   templateUrl: './payments-aging.component.html',
   styleUrls: ['./payments-aging.component.css']
 })
 export class PaymentsAgingComponent {
   payments: any[] = [];
+  filteredPayments: any[] = [];
+
   loading = true;
   errorMessage = '';
+
+  searchBillingDocument: string = '';
+  searchBillingDate: string = '';
 
   constructor(private http: HttpClient) {}
 
@@ -26,7 +32,6 @@ export class PaymentsAgingComponent {
       return;
     }
 
-    // Call Backend
     this.http.post<any>('http://localhost:3000/payments-aging', { vendorId })
       .subscribe({
         next: (response) => {
@@ -41,6 +46,8 @@ export class PaymentsAgingComponent {
               currency: item.currency,
               agingDays: Number(item.overdueDays)
             }));
+
+            this.filteredPayments = this.payments;
           }
         },
         error: (err) => {
@@ -49,5 +56,35 @@ export class PaymentsAgingComponent {
           console.error(err);
         }
       });
+  }
+
+  // -------------------------
+  // FILTER FUNCTION
+  // -------------------------
+  filterPayments() {
+    this.filteredPayments = this.payments.filter(payment => {
+      const matchesBillingDoc =
+        this.searchBillingDocument === '' ||
+        payment.billingDocument.toString().includes(this.searchBillingDocument);
+
+      const matchesBillingDate =
+        this.searchBillingDate === '' ||
+        payment.billingDate === this.searchBillingDate;
+
+      return matchesBillingDoc && matchesBillingDate;
+    });
+  }
+
+  // -------------------------
+  // CLEAR FUNCTIONS
+  // -------------------------
+  clearBillingDocument() {
+    this.searchBillingDocument = '';
+    this.filterPayments();
+  }
+
+  clearBillingDate() {
+    this.searchBillingDate = '';
+    this.filterPayments();
   }
 }

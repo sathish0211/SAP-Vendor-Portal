@@ -7,6 +7,34 @@
         <h1 class="page-title">Request for Quotation</h1>
     </div>
 
+    <!-- Filter Section -->
+    <div class="filter-container">
+
+        <!-- RFQ Number Filter -->
+        <div class="filter-group">
+            <input 
+                type="text" 
+                placeholder="Search by RFQ Number"
+                class="filter-input"
+                [(ngModel)]="searchRfqNumber"
+                (input)="filterRfqs()"
+            />
+            <button class="clear-btn" (click)="clearRfqNumber()">Clear</button>
+        </div>
+
+        <!-- RFQ Date Filter -->
+        <div class="filter-group">
+            <input 
+                type="date" 
+                class="filter-input"
+                [(ngModel)]="searchRfqDate"
+                (change)="filterRfqs()"
+            />
+            <button class="clear-btn" (click)="clearRfqDate()">Clear</button>
+        </div>
+
+    </div>
+
     <!-- Loading -->
     <div class="loading-text" *ngIf="loading">
         Loading RFQs...
@@ -33,7 +61,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let rfq of rfqs">
+                <tr *ngFor="let rfq of filteredRfqs">
                     <td>{{ rfq.rfqNumber }}</td>
                     <td>{{ rfq.rfqDate }}</td>
                     <td>{{ rfq.materialNumber }}</td>

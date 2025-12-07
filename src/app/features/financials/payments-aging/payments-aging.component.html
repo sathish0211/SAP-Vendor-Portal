@@ -8,6 +8,34 @@
         <h1 class="page-title">Payments & Aging</h1>
     </div>
 
+    <!-- FILTER SECTION -->
+    <div class="filter-container">
+
+        <!-- Billing Document Filter -->
+        <div class="filter-group">
+            <input 
+                type="text"
+                placeholder="Search Billing Document"
+                class="filter-input"
+                [(ngModel)]="searchBillingDocument"
+                (input)="filterPayments()"
+            />
+            <button class="clear-btn" (click)="clearBillingDocument()">Clear</button>
+        </div>
+
+        <!-- Billing Date Filter -->
+        <div class="filter-group">
+            <input 
+                type="date"
+                class="filter-input"
+                [(ngModel)]="searchBillingDate"
+                (change)="filterPayments()"
+            />
+            <button class="clear-btn" (click)="clearBillingDate()">Clear</button>
+        </div>
+
+    </div>
+
     <!-- Loading State -->
     <div *ngIf="loading" class="loading-box">
         Loading payments & aging details...
@@ -19,12 +47,12 @@
     </div>
 
     <!-- No Data -->
-    <div *ngIf="!loading && !errorMessage && payments.length === 0" class="no-data-box">
+    <div *ngIf="!loading && !errorMessage && filteredPayments.length === 0" class="no-data-box">
         No records found.
     </div>
 
     <!-- Payments Aging Table -->
-    <div class="table-container" *ngIf="!loading && !errorMessage && payments.length > 0">
+    <div class="table-container" *ngIf="!loading && !errorMessage && filteredPayments.length > 0">
         <table class="data-table">
             <thead>
                 <tr>
@@ -38,7 +66,7 @@
             </thead>
 
             <tbody>
-                <tr *ngFor="let payment of payments">
+                <tr *ngFor="let payment of filteredPayments">
                     <td>{{ payment.billingDocument }}</td>
                     <td>{{ payment.billingDate }}</td>
                     <td>{{ payment.dueDate }}</td>

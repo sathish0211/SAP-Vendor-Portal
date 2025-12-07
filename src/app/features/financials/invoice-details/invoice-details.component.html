@@ -8,6 +8,34 @@
         <h1 class="page-title">Invoice Details</h1>
     </div>
 
+    <!-- FILTER SECTION -->
+    <div class="filter-container">
+
+        <!-- Invoice Number Filter -->
+        <div class="filter-group">
+            <input 
+                type="text" 
+                placeholder="Search by Invoice Number"
+                class="filter-input"
+                [(ngModel)]="searchInvoiceNo"
+                (input)="filterInvoices()"
+            />
+            <button class="clear-btn" (click)="clearInvoiceNo()">Clear</button>
+        </div>
+
+        <!-- Document Date Filter -->
+        <div class="filter-group">
+            <input 
+                type="date" 
+                class="filter-input"
+                [(ngModel)]="searchDocumentDate"
+                (change)="filterInvoices()"
+            />
+            <button class="clear-btn" (click)="clearDocumentDate()">Clear</button>
+        </div>
+
+    </div>
+
     <div *ngIf="loading" class="loading">Loading invoice details...</div>
     <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
 
@@ -29,7 +57,7 @@
             </thead>
 
             <tbody>
-                <tr *ngFor="let inv of invoices">
+                <tr *ngFor="let inv of filteredInvoices">
                     <td>{{ inv.invoiceNo }}</td>
                     <td>{{ inv.invoiceDate }}</td>
                     <td>{{ inv.postingDate }}</td>

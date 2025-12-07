@@ -2,18 +2,25 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import axios from 'axios';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-credit-debit-memo',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './credit-debit-memo.component.html',
   styleUrls: ['./credit-debit-memo.component.css']
 })
 export class CreditDebitMemoComponent implements OnInit {
 
   memos: any[] = [];
+  filteredMemos: any[] = [];
+
   loading = true;
+
+  // FILTER VARIABLES
+  searchMemoNo: string = '';
+  searchMemoDate: string = '';
 
   ngOnInit() {
     const vendorId = localStorage.getItem('vendorId');
@@ -23,12 +30,12 @@ export class CreditDebitMemoComponent implements OnInit {
       return;
     }
 
-    // Check if cached in localStorage
     const cached = localStorage.getItem("memoData");
     if (cached) {
       this.memos = JSON.parse(cached);
+      this.filteredMemos = this.memos;
       this.loading = false;
-      this.fetchMemoFromBackend(vendorId); // background refresh
+      this.fetchMemoFromBackend(vendorId);
     } else {
       this.fetchMemoFromBackend(vendorId);
     }
@@ -41,8 +48,8 @@ export class CreditDebitMemoComponent implements OnInit {
       });
 
       this.memos = response.data.items || [];
+      this.filteredMemos = this.memos;
 
-      // Save to local storage
       localStorage.setItem("memoData", JSON.stringify(this.memos));
 
     } catch (error) {
@@ -53,7 +60,30 @@ export class CreditDebitMemoComponent implements OnInit {
     }
   }
 
-  // Convert S / H to readable type
+  filterMemos() {
+    this.filteredMemos = this.memos.filter(memo => {
+      const matchesMemoNo =
+        this.searchMemoNo === '' ||
+        memo.memoNumber.toString().includes(this.searchMemoNo);
+
+      const matchesDate =
+        this.searchMemoDate === '' ||
+        memo.documentDate === this.searchMemoDate;
+
+      return matchesMemoNo && matchesDate;
+    });
+  }
+
+  clearMemoNo() {
+    this.searchMemoNo = '';
+    this.filterMemos();
+  }
+
+  clearMemoDate() {
+    this.searchMemoDate = '';
+    this.filterMemos();
+  }
+
   getMemoType(indicator: string): string {
     return indicator === "S" ? "Credit" : "Debit";
   }

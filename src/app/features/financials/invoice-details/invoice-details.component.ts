@@ -2,19 +2,25 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-invoice-details',
   standalone: true,
-  imports: [CommonModule, RouterModule, HttpClientModule],
+  imports: [CommonModule, RouterModule, HttpClientModule, FormsModule],
   templateUrl: './invoice-details.component.html',
   styleUrls: ['./invoice-details.component.css']
 })
 export class InvoiceDetailsComponent implements OnInit {
 
   invoices: any[] = [];
+  filteredInvoices: any[] = [];
+
   loading = true;
   errorMessage = '';
+
+  searchInvoiceNo: string = '';
+  searchDocumentDate: string = '';
 
   constructor(private http: HttpClient) {}
 
@@ -31,6 +37,7 @@ export class InvoiceDetailsComponent implements OnInit {
       .subscribe({
         next: (result: any) => {
           this.loading = false;
+
           if (result.items) {
             this.invoices = result.items.map((item: any) => ({
               invoiceNo: item.invoiceNumber,
@@ -43,13 +50,39 @@ export class InvoiceDetailsComponent implements OnInit {
               poNumber: item.poNumber,
               poItem: item.poItem
             }));
+
+            this.filteredInvoices = this.invoices;
           }
         },
-        error: err => {
+        error: () => {
           this.loading = false;
           this.errorMessage = "Failed to load invoice details.";
         }
       });
+  }
+
+  filterInvoices() {
+    this.filteredInvoices = this.invoices.filter(inv => {
+      const matchesInvoiceNo =
+        this.searchInvoiceNo === '' ||
+        inv.invoiceNo.toString().includes(this.searchInvoiceNo);
+
+      const matchesDocumentDate =
+        this.searchDocumentDate === '' ||
+        inv.invoiceDate === this.searchDocumentDate;
+
+      return matchesInvoiceNo && matchesDocumentDate;
+    });
+  }
+
+  clearInvoiceNo() {
+    this.searchInvoiceNo = '';
+    this.filterInvoices();
+  }
+
+  clearDocumentDate() {
+    this.searchDocumentDate = '';
+    this.filterInvoices();
   }
 
   // ---------------------------
@@ -63,7 +96,6 @@ export class InvoiceDetailsComponent implements OnInit {
       .subscribe({
         next: (res: any) => {
           const base64 = res.base64;
-
           const pdfWindow = window.open("");
           pdfWindow?.document.write(
             `<iframe width='100%' height='100%' src='data:application/pdf;base64,${base64}'></iframe>`
@@ -83,10 +115,8 @@ export class InvoiceDetailsComponent implements OnInit {
       { invoiceNo, vendorId })
       .subscribe({
         next: (res: any) => {
-          const base64 = res.base64;
-
           const link = document.createElement("a");
-          link.href = "data:application/pdf;base64," + base64;
+          link.href = "data:application/pdf;base64," + res.base64;
           link.download = `${invoiceNo}.pdf`;
           link.click();
         },

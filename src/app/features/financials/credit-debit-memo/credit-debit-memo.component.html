@@ -7,6 +7,33 @@
         <h1 class="page-title">Credit / Debit Memo</h1>
     </div>
 
+    <!-- FILTER SECTION -->
+    <div class="filter-container">
+
+        <!-- Memo Number Filter -->
+        <div class="filter-group">
+            <input
+                type="text"
+                placeholder="Search Memo Number"
+                class="filter-input"
+                [(ngModel)]="searchMemoNo"
+                (input)="filterMemos()"
+            />
+            <button class="clear-btn" (click)="clearMemoNo()">Clear</button>
+        </div>
+
+        <!-- Memo Date Filter -->
+        <div class="filter-group">
+            <input
+                type="date"
+                class="filter-input"
+                [(ngModel)]="searchMemoDate"
+                (change)="filterMemos()"
+            />
+            <button class="clear-btn" (click)="clearMemoDate()">Clear</button>
+        </div>
+    </div>
+
     <!-- Loading Spinner -->
     <div *ngIf="loading" class="loading">
         Loading memo details...
@@ -22,17 +49,15 @@
                     <th>Amount</th>
                     <th>Currency</th>
                     <th>Reference</th>
-                    <!-- <th>Description</th> -->
                     <th>Material</th>
                     <th>Qty</th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let memo of memos">
+                <tr *ngFor="let memo of filteredMemos">
                     <td>{{ memo.memoNumber }}</td>
                     <td>{{ memo.documentDate }}</td>
 
-                    <!-- Type with color -->
                     <td>
                         <span class="type-badge"
                               [ngClass]="{
@@ -46,7 +71,6 @@
                     <td>{{ memo.amount }}</td>
                     <td>{{ memo.currency }}</td>
                     <td>{{ memo.reference || '—' }}</td>
-                    <!-- <td>{{ memo.text || '—' }}</td> -->
                     <td>{{ memo.materialNumber || '—' }}</td>
                     <td>{{ memo.quantity }}</td>
                 </tr>

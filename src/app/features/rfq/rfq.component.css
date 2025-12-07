@@ -35,6 +35,40 @@
     color: var(--color-primary);
 }
 
+/* Filter Section */
+.filter-container {
+    display: flex;
+    gap: 25px;
+    margin-bottom: 20px;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.filter-input {
+    padding: 10px;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    min-width: 200px;
+}
+
+.clear-btn {
+    padding: 8px 16px;
+    background-color: maroon;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.clear-btn:hover {
+    background-color: #6d0000;
+}
+
 .table-container {
     background-color: var(--color-card-bg);
     border-radius: var(--radius-card);
@@ -61,14 +95,6 @@
     color: white;
     font-weight: 500;
     white-space: nowrap;
-}
-
-.data-table th:first-child {
-    border-top-left-radius: 8px;
-}
-
-.data-table th:last-child {
-    border-top-right-radius: 8px;
 }
 
 .data-table tr:hover {

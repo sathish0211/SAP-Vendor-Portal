@@ -2,6 +2,7 @@
     padding: 20px;
 }
 
+/* PAGE HEADER */
 .page-header {
     display: flex;
     align-items: center;
@@ -13,12 +14,10 @@
     align-items: center;
     background-color: var(--color-primary);
     color: white;
-    border: none;
     padding: 8px 16px;
     border-radius: var(--radius-button);
     cursor: pointer;
     margin-right: 20px;
-    font-weight: 500;
     text-decoration: none;
 }
 
@@ -35,6 +34,42 @@
     color: var(--color-primary);
 }
 
+/* FILTER SECTION */
+.filter-container {
+    display: flex;
+    gap: 25px;
+    margin-bottom: 20px;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.filter-input {
+    padding: 10px;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    min-width: 200px;
+}
+
+.clear-btn {
+    padding: 8px 16px;
+    background-color: maroon;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.clear-btn:hover {
+    background-color: #6d0000;
+    
+}
+
+/* TABLE */
 .table-container {
     background-color: var(--color-card-bg);
     border-radius: var(--radius-card);
@@ -63,18 +98,11 @@
     white-space: nowrap;
 }
 
-.data-table th:first-child {
-    border-top-left-radius: 8px;
-}
-
-.data-table th:last-child {
-    border-top-right-radius: 8px;
-}
-
 .data-table tr:hover {
     background-color: rgba(0, 0, 0, 0.02);
 }
 
+/* TYPE BADGE COLORS */
 .type-credit {
     color: #2e7d32;
     font-weight: bold;
@@ -85,19 +113,10 @@
     font-weight: bold;
 }
 
-.type-credit {
-  color: green;
-  font-weight: bold;
-}
-
-.type-debit {
-  color: red;
-  font-weight: bold;
-}
-
+/* LOADING */
 .loading {
-  text-align: center;
-  font-size: 18px;
-  padding: 20px;
-  color: #555;
+    text-align: center;
+    font-size: 18px;
+    padding: 20px;
+    color: #555;
 }

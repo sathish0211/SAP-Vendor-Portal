@@ -1,59 +1,84 @@
 <div class="po-container">
 
-    <div class="page-header">
-        <a routerLink="/dashboard" class="back-btn">
-            <span class="back-icon">←</span> Back
-        </a>
-        <h1 class="page-title">Purchase Orders</h1>
+  <div class="page-header">
+    <a routerLink="/dashboard" class="back-btn">
+      <span class="back-icon">←</span> Back
+    </a>
+    <h1 class="page-title">Purchase Orders</h1>
+  </div>
+
+  <!-- Filter Section -->
+  <div class="filter-container">
+
+    <!-- PO Number Filter -->
+    <div class="filter-group">
+      <input 
+        type="text" 
+        placeholder="Search by PO Number"
+        class="filter-input"
+        [(ngModel)]="searchPoNumber"
+        (input)="filterOrders()"
+      />
+      <button class="clear-btn" (click)="clearPoNumber()">Clear</button>
     </div>
 
-    <!-- Loading -->
-    <div class="loading-text" *ngIf="loading">
-        Loading Purchase Orders...
+    <!-- PO Date Filter -->
+    <div class="filter-group">
+      <input 
+        type="date" 
+        class="filter-input"
+        [(ngModel)]="searchPoDate"
+        (change)="filterOrders()"
+      />
+      <button class="clear-btn" (click)="clearPoDate()">Clear</button>
     </div>
 
-    <!-- Error -->
-    <div class="error-text" *ngIf="errorMessage">
-        {{ errorMessage }}
-    </div>
+  </div>
 
-    <!-- Purchase Orders Table -->
-    <div class="table-container" *ngIf="!loading && !errorMessage">
-        <table class="data-table">
-            <thead>
-  <tr>
-    <th>PO Number</th>
-    <th>PO Item</th>
-    <th>PO Date</th>
-    <th>Material Number</th>
-    <th>Description</th>
-    <th>Qty</th>
-    <th>Unit</th>
-    <th>Net Price</th>
-    <th>Currency</th>
-    <th>Delivery Date</th>
-   
-  </tr>
-</thead>
+  <!-- Loading -->
+  <div class="loading-text" *ngIf="loading">
+    Loading Purchase Orders...
+  </div>
 
-<tbody>
-  <tr *ngFor="let po of purchaseOrders">
-    <td>{{ po.poNumber }}</td>
-    <td>{{ po.poItem }}</td>
-    <td>{{ po.poDate }}</td>
-    <td>{{ po.materialNumber }}</td>
-    <td>{{ po.description }}</td>
-    <td>{{ po.quantity }}</td>
-    <td>{{ po.unit }}</td>
-    <td>{{ po.netPrice }}</td>
-    <td>{{ po.currency }}</td>
-    <td>{{ po.deliveryDate }}</td>
+  <!-- Error -->
+  <div class="error-text" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
 
-   
-  </tr>
-</tbody>
+  <!-- Purchase Orders Table -->
+  <div class="table-container" *ngIf="!loading && !errorMessage">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>PO Number</th>
+          <th>PO Item</th>
+          <th>PO Date</th>
+          <th>Material Number</th>
+          <th>Description</th>
+          <th>Qty</th>
+          <th>Unit</th>
+          <th>Net Price</th>
+          <th>Currency</th>
+          <th>Delivery Date</th>
+        </tr>
+      </thead>
 
-        </table>
-    </div>
+      <tbody>
+        <tr *ngFor="let po of filteredOrders">
+          <td>{{ po.poNumber }}</td>
+          <td>{{ po.poItem }}</td>
+          <td>{{ po.poDate }}</td>
+          <td>{{ po.materialNumber }}</td>
+          <td>{{ po.description }}</td>
+          <td>{{ po.quantity }}</td>
+          <td>{{ po.unit }}</td>
+          <td>{{ po.netPrice }}</td>
+          <td>{{ po.currency }}</td>
+          <td>{{ po.deliveryDate }}</td>
+        </tr>
+      </tbody>
+
+    </table>
+  </div>
 
 </div>

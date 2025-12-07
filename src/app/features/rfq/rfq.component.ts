@@ -1,19 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-rfq',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './rfq.component.html',
   styleUrls: ['./rfq.component.css']
 })
 export class RfqComponent implements OnInit {
 
   rfqs: any[] = [];
+  filteredRfqs: any[] = [];
+
   loading = true;
   errorMessage = '';
+
+  searchRfqNumber: string = '';
+  searchRfqDate: string = '';
 
   ngOnInit() {
     const vendorId = localStorage.getItem("vendorId");
@@ -47,8 +53,10 @@ export class RfqComponent implements OnInit {
           quantity: item.quantity,
           unit: item.unit,
           deliveryDate: item.deliveryDate,
-          bidSubmissionDate: item.deliveryDate   // If SAP doesn't provide, reuse delivery date
+          bidSubmissionDate: item.deliveryDate
         }));
+
+        this.filteredRfqs = this.rfqs;
       } else {
         this.errorMessage = "No RFQ records found.";
       }
@@ -58,5 +66,29 @@ export class RfqComponent implements OnInit {
       this.errorMessage = "Failed to connect to server.";
       console.error(error);
     }
+  }
+
+  filterRfqs() {
+    this.filteredRfqs = this.rfqs.filter(rfq => {
+      const matchesRfqNumber =
+        this.searchRfqNumber === '' ||
+        rfq.rfqNumber.toString().includes(this.searchRfqNumber);
+
+      const matchesRfqDate =
+        this.searchRfqDate === '' ||
+        rfq.rfqDate === this.searchRfqDate;
+
+      return matchesRfqNumber && matchesRfqDate;
+    });
+  }
+
+  clearRfqNumber() {
+    this.searchRfqNumber = '';
+    this.filterRfqs();
+  }
+
+  clearRfqDate() {
+    this.searchRfqDate = '';
+    this.filterRfqs();
   }
 }

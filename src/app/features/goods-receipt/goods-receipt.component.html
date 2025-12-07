@@ -7,6 +7,34 @@
         <h1 class="page-title">Goods Receipt</h1>
     </div>
 
+    <!-- Filter Section -->
+    <div class="filter-container">
+
+        <!-- GR Number Filter -->
+        <div class="filter-group">
+            <input 
+                type="text" 
+                placeholder="Search by GR Number"
+                class="filter-input"
+                [(ngModel)]="searchGrNumber"
+                (input)="filterGoodsReceipts()"
+            />
+            <button class="clear-btn" (click)="clearGrNumber()">Clear</button>
+        </div>
+
+        <!-- Posting Date Filter -->
+        <div class="filter-group">
+            <input 
+                type="date" 
+                class="filter-input"
+                [(ngModel)]="searchPostingDate"
+                (change)="filterGoodsReceipts()"
+            />
+            <button class="clear-btn" (click)="clearPostingDate()">Clear</button>
+        </div>
+
+    </div>
+
     <!-- Loading -->
     <div class="loading-text" *ngIf="loading">
         Loading Goods Receipt Records...
@@ -34,7 +62,7 @@
             </thead>
 
             <tbody>
-                <tr *ngFor="let gr of goodsReceipts">
+                <tr *ngFor="let gr of filteredGoodsReceipts">
                     <td>{{ gr.grNumber }}</td>
                     <td>{{ gr.postingDate }}</td>
                     <td>{{ gr.materialNumber }}</td>
